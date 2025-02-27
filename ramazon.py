@@ -1,15 +1,14 @@
 import logging
-import requests
 import random
 import asyncio
-from aiogram import Bot, Dispatcher, types
+from aiogram import Bot, Dispatcher, types, F
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.filters import Command
 from telethon import TelegramClient
 
 # Bot va Telegram API ma'lumotlari
 BOT_TOKEN = "7741320463:AAG3yejtGuSRl-46v00E_TolYpOi5rslizA"
-API_ID = "29337025"
+API_ID = 29337025  # Bu int bo'lishi kerak
 API_HASH = "19TRkrbLDpFQdfsinsVZBtsguKu2AbZQr2"
 CHANNEL_USERNAME = "manguzarmasjidi"
 
@@ -56,26 +55,28 @@ async def start(message: types.Message):
                          "Kerakli bo‘limni tanlang:", reply_markup=keyboard)
 
 # Namoz vaqtlarini olish
-@dp.message(lambda message: message.text == "📅 Bugungi namoz vaqtlari")
+@dp.message(F.text == "📅 Bugungi namoz vaqtlari")
 async def send_prayer_times(message: types.Message):
     await fetch_latest_prayer_times()  # Har safar so‘ralganda yangilash
     await message.answer(latest_prayer_times, parse_mode="Markdown")
 
 # Qur'on oyati yoki hadis yuborish
-@dp.message(lambda message: message.text == "📖 Qur'on oyati / Hadis")
+@dp.message(F.text == "📖 Qur'on oyati / Hadis")
 async def send_oyat_hadis(message: types.Message):
     await message.answer(random.choice(OYAT_HADISLAR), parse_mode="Markdown")
 
 # Zikr va duolar
-@dp.message(lambda message: message.text == "🤲 Zikr va Duolar")
+@dp.message(F.text == "🤲 Zikr va Duolar")
 async def send_zikr_duo(message: types.Message):
     await message.answer(random.choice(ZIKRLAR_DUOLAR), parse_mode="Markdown")
 
 # Botni ishga tushirish
 async def main():
-    await telethon_client.start(bot_token=BOT_TOKEN)  # Avtomatik login
+    await telethon_client.start()  # Bot_token shart emas
     await fetch_latest_prayer_times()  # Bot ishga tushganda yangilash
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(main())
