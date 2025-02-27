@@ -9,7 +9,7 @@ from telethon import TelegramClient
 
 # Bot va Telegram API ma'lumotlari
 BOT_TOKEN = "7741320463:AAG3yejtGuSRl-46v00E_TolYpOi5rslizA"
-API_ID = 29337025
+API_ID = "29337025"
 API_HASH = "19TRkrbLDpFQdfsinsVZBtsguKu2AbZQr2"
 CHANNEL_USERNAME = "manguzarmasjidi"
 
